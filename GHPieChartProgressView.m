@@ -17,6 +17,12 @@
 #pragma mark - setters and getters
 
 - (void)setProgress:(CGFloat)progress {
+    if (progress < 0.0f) {
+        progress = 0.0f;
+    } else if (progress > 1.0f) {
+        progress = 1.0f;
+    }
+    
     if (progress != _progress) {
         _progress = progress;
         [self setNeedsDisplay];
@@ -72,6 +78,9 @@
         self.progressLabel.shadowOffset = CGSizeMake(0.0f, 2.0f);
         self.progressLabel.font = [UIFont boldSystemFontOfSize:14.0f];
         [self addSubview:self.progressLabel];
+        
+        self.progress = 0.5f;
+        self.progress = 0.0f;
     }
     return self;
 }
