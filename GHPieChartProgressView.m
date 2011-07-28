@@ -144,7 +144,6 @@
 #pragma mark - Memory management
 
 - (void)dealloc {
-    
     if (_tintGradient) {
         CGGradientRelease(_tintGradient);
     }
