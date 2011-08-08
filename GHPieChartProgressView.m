@@ -41,17 +41,24 @@
             CGGradientRelease(_tintGradient);
         }
         
-        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGColorSpaceRef colorSpace = CGColorGetColorSpace(_tintColor.CGColor);
         CGFloat locations[] = {0.0f, 1.0f};
+        
+        const CGFloat *components = CGColorGetComponents(_tintColor.CGColor);
+        size_t numberOfComponents = CGColorGetNumberOfComponents(_tintColor.CGColor);
+        CGFloat newComponents[numberOfComponents];
+        for (NSUInteger i = 0; i < numberOfComponents; i++) {
+            newComponents[i] = components[i] * 0.85f;
+        }
+        CGColorRef endColor = CGColorCreate(colorSpace, newComponents);
         
         NSArray *colors = [NSArray arrayWithObjects:
                            (__bridge id)self.tintColor.CGColor, 
-                           (__bridge id)[self.tintColor colorByMultiplyingBy:0.85f].CGColor,
+                           (__bridge id)endColor,
                            nil];
         
+        CGColorRelease(endColor);
         _tintGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)colors, locations);
-        
-        CGColorSpaceRelease(colorSpace);
     }
 }
 
