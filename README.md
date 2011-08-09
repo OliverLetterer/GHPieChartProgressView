@@ -4,7 +4,7 @@
 
 ## How to use GHPieChartProgressView
 
-* link against <*QuartzCore/QuartzCore.h*>
+* link against <**QuartzCore/QuartzCore.h**>
 
 ```objective-c
 GHPieChartProgressView *progressView = [[GHPieChartProgressView alloc] initWithFrame: ...];
