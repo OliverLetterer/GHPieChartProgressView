@@ -8,11 +8,10 @@
 
 #import "GHPieChartProgressView.h"
 #import "UIColor-Expanded.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation GHPieChartProgressView
-
-@synthesize progress=_progress, tintColor=_tintColor;
-@synthesize progressLabel=_progressLabel;
+@synthesize progress=_progress, tintColor=_tintColor, progressLabel=_progressLabel;
 
 #pragma mark - setters and getters
 
@@ -27,7 +26,7 @@
         _progress = progress;
         [self setNeedsDisplay];
         
-        self.progressLabel.text = [NSString stringWithFormat:@"%d %%", (int)(_progress*100)];
+        _progressLabel.text = [NSString stringWithFormat:@"%d %%", (int)(_progress*100)];
         [self setNeedsLayout];
     }
 }
@@ -35,7 +34,6 @@
 - (void)setTintColor:(UIColor *)tintColor {
     if (tintColor != _tintColor) {
         _tintColor = tintColor;
-        [self setNeedsDisplay];
         
         if (_tintGradient) {
             CGGradientRelease(_tintGradient);
@@ -59,13 +57,7 @@
         
         CGColorRelease(endColor);
         _tintGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)colors, locations);
-    }
-}
-
-- (void)setFrame:(CGRect)frame {
-    CGRect bounds = self.bounds;
-    [super setFrame:frame];
-    if (!CGRectEqualToRect(bounds, self.bounds)) {
+        
         [self setNeedsDisplay];
     }
 }
@@ -77,36 +69,30 @@
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
         
-        self.progressLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        self.progressLabel.backgroundColor = [UIColor clearColor];
-        self.progressLabel.textColor = [UIColor whiteColor];
-        self.progressLabel.textAlignment = UITextAlignmentCenter;
-        self.progressLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.25f];
-        self.progressLabel.shadowOffset = CGSizeMake(0.0f, 2.0f);
-        self.progressLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-        [self addSubview:self.progressLabel];
+        _progressLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _progressLabel.backgroundColor = [UIColor clearColor];
+        _progressLabel.textColor = [UIColor whiteColor];
+        _progressLabel.textAlignment = UITextAlignmentCenter;
+        _progressLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.25f];
+        _progressLabel.shadowOffset = CGSizeMake(0.0f, 2.0f);
+        _progressLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+        [self addSubview:_progressLabel];
         
         self.progress = 0.5f;
         self.progress = 0.0f;
+        
+        self.layer.needsDisplayOnBoundsChange = YES;
     }
     return self;
 }
 
 - (void)layoutSubviews {
-    [self.progressLabel sizeToFit];
-    self.progressLabel.center = CGPointMake(CGRectGetWidth(self.bounds)/2.0f, CGRectGetHeight(self.bounds)/2.0f);
+    [_progressLabel sizeToFit];
+    _progressLabel.center = CGPointMake(CGRectGetWidth(self.bounds)/2.0f, CGRectGetHeight(self.bounds)/2.0f);
 }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
-    // Drawing code
-    
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    
-    // make background transparent
-    [[UIColor clearColor] setFill];
-    UIRectFill(rect);
     
     CGRect circleRect = CGRectMake(1.0f, 1.0f, CGRectGetWidth(rect)-2.0f, CGRectGetHeight(rect)-2.0f);
     
@@ -154,7 +140,6 @@
     if (_tintGradient) {
         CGGradientRelease(_tintGradient);
     }
-    
 }
 
 @end

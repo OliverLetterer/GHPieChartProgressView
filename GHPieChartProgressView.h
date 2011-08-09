@@ -15,12 +15,12 @@
     
     UILabel *_progressLabel;
     
-    CGGradientRef _tintGradient;
+    CGGradientRef _tintGradient;    // retained
 }
 
 @property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, retain) UIColor *tintColor;
 
-@property (nonatomic, retain) UILabel *progressLabel;
+@property (nonatomic, readonly, retain) UILabel *progressLabel;
 
 @end
