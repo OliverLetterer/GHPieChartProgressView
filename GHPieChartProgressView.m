@@ -7,7 +7,6 @@
 //
 
 #import "GHPieChartProgressView.h"
-#import "UIColor-Expanded.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation GHPieChartProgressView
