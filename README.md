@@ -1,6 +1,6 @@
 # GHPieChartProgressView
 
-**GHPieChartProgressView** is a *UIView* subclass which works as a progress view.
+**GHPieChartProgressView** is a *UIView* subclass which works as a progress view and runs under **ARC**.
 
 ## How to use GHPieChartProgressView
 
